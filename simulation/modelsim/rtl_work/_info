@@ -1,0 +1,46 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\sevys\Desktop\Projects\ELEC-374\simulation\modelsim
+vRegister_32
+IZnLbmRG7;d5WNj@CleE[O3
+V;:WRQ@H:HL8TbSOB`e86=1
+Z1 dC:\Users\sevys\Desktop\Projects\ELEC-374\simulation\modelsim
+w1674536471
+8C:/Users/sevys/Desktop/Projects/ELEC-374/Register_32.v
+FC:/Users/sevys/Desktop/Projects/ELEC-374/Register_32.v
+L0 1
+Z2 OV;L;10.1d;51
+r1
+31
+Z3 o-vlog01compat -work work -O0
+n@register_32
+!i10b 1
+!s100 mb7MkbE4noSG7]AmHm5GG2
+!s85 0
+!s108 1674536506.257000
+!s107 C:/Users/sevys/Desktop/Projects/ELEC-374/Register_32.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/sevys/Desktop/Projects/ELEC-374|C:/Users/sevys/Desktop/Projects/ELEC-374/Register_32.v|
+!s101 -O0
+Z4 !s92 -vlog01compat -work work +incdir+C:/Users/sevys/Desktop/Projects/ELEC-374 -O0
+vregister_tb
+!i10b 1
+!s100 KDoa]b:HFA;`H9c@kVCUS2
+I<fXPWZ>Hb9BAL=2B4QjeQ2
+VPzo]z<>9V8[Ijo<]RZF=P0
+R1
+w1674535707
+8C:/Users/sevys/Desktop/Projects/ELEC-374/register_tb.v
+FC:/Users/sevys/Desktop/Projects/ELEC-374/register_tb.v
+L0 2
+R2
+r1
+!s85 0
+31
+!s108 1674536506.294000
+!s107 C:/Users/sevys/Desktop/Projects/ELEC-374/register_tb.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/sevys/Desktop/Projects/ELEC-374|C:/Users/sevys/Desktop/Projects/ELEC-374/register_tb.v|
+!s101 -O0
+R3
+R4

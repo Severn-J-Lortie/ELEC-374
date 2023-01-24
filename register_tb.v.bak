@@ -1,0 +1,8 @@
+`timescale 1ns/10ps
+module register_tb;
+
+	reg clk, clr, enable; 
+	reg [31:0] datain, dataout;
+	Register_32 DUT(clr, clk, enable, datain, dataout)
+
+endmodule
