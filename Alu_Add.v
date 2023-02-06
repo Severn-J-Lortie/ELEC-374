@@ -1,5 +1,5 @@
 
-module add #(parameter size = 32)(
+module Alu_Add #(parameter size = 32)(
 	input [size-1:0] Ra,
 	input [size-1:0] Rb,
 	input wire Cin,
@@ -13,7 +13,7 @@ module add #(parameter size = 32)(
 		genvar k;
 		
 		for (k = 0, k < size, k = k + 1) begin
-			full_adder(S[k], Ra[K], Rb[k], Cin[k], S[k+1])
+			full_adder(S[k], Ra[K], Rb[k], Cin[k], S[k+1]);
 		end
 	endgenerate
 	

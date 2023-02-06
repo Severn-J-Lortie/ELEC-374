@@ -1,5 +1,5 @@
 
-module and #(parameter size = 32)(
+module Alu_And #(parameter size = 32)(
 	input wire [size-1:0] Ra,
 	input wire [size-1:0] Rb,
 	output wire [size-1:0] Rz
