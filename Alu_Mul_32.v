@@ -17,7 +17,9 @@ module Alu_Mul_CB(input [2:0] X, output reg H, S, D);
 	always @(X) begin
 		case(X)
 			// 0*A
-			3'b000: H <= 0; // rest are don't cares
+			3'b000: begin	
+				H <= 0; S <= 0; D <=0; // rest are don't cares
+			end
 			
 			// A
 			3'b001: begin
@@ -48,14 +50,77 @@ module Alu_Mul_CB(input [2:0] X, output reg H, S, D);
 				H <= 1; S <= 0; D <= 1; 
 			end
 			
-			3'b111: H <= 1; 
+			3'b111: begin
+				H <= 1; S <=0; D <= 0;
+			end	
 		endcase
 	end
 endmodule
 
-module Alu_Mul_32 (input [31:0] A, X, output [31:0] S);
+module Alu_Mul_32 (input [31:0] A, X, output [61:0] O);
 
+	generate
 	
-
+		// Net between layers of the array adder
+		wire [29:0] t [15:0];
+		
+		genvar i;
+		for (i = 0; i < 16; i = i + 1) begin: loop
+		
+			// Carries
+			wire [31:0] carry;
+			wire S, H, D;
+			
+			// Special case for the first row control block. 
+			// Append 0 to the start of the number
+			if (i == 0) begin
+				Alu_Mul_CB cb({X[1:0], 1'b0}, H, S, D);
+			end
+			else begin
+				Alu_Mul_CB cb(X[i + i: i + i - 2], H, S, D);
+			end
+			
+			genvar j;
+			for (j = 0; j < 32; j = j + 1) begin: loop
+				// First row
+				if (i == 0) begin
+					if (j == 0) begin
+						Alu_Mul_SB sb(A[0], 0, 0, S, 0, H, D, O[0], carry[0]);
+					end
+					else if (j == 1) begin
+						Alu_Mul_SB sb(A[1], A[0], 0, S, carry[0], H, D, O[1], carry[1]);
+					end
+					else begin
+						Alu_Mul_SB sb(A[j], A[j - 1], 0, S, carry[j - 1], H, D, t[i][j - 2], carry[j]);
+					end
+				end
+				else if (i < 15) begin
+					// Middle rows
+					if (j == 0) begin
+						Alu_Mul_SB sb(A[0], 0, t[i - 1][0], S, 0, H, D, O[i + i], carry[0]);
+					end
+					else if (j == 1) begin
+						Alu_Mul_SB sb(A[1], A[0], t[i - 1][1], S, carry[0], H, D, O[i + i + 1], carry[1]);
+					end
+					else begin
+						Alu_Mul_SB sb(A[j], A[j - 1], j > 27 ? t[i - 1][27] : t[i - 1][j], S, carry[j - 1], H, D, t[i][j - 2], carry[j]);
+					end
+				end
+				else begin
+					// Last row
+					if (j == 0) begin
+						Alu_Mul_SB sb(A[0], 0, t[i - 1][0], S, 0, H, D, O[i + i], carry[0]);
+					end
+					else if (j == 1) begin
+						Alu_Mul_SB sb(A[1], A[0], t[i - 1][1], S, carry[0], H, D, O[i + i + 1], carry[1]);
+					end
+					else begin
+						Alu_Mul_SB sb(A[j], A[j - 1], j > 27 ? t[i - 1][27] : t[i - 1][j], S, carry[j - 1], H, D, O[i + i + j], carry[j]);
+					end
+				end
+			end 
+		end	
+	endgenerate
+	
 
 endmodule
