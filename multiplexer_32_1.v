@@ -1,5 +1,5 @@
 
-module multiplexer_32_1 (
+module Multiplexer_32_1 (
 	input [31:0] R0,
 	input [31:0] R1,
 	input [31:0] R2,

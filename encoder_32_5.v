@@ -1,5 +1,5 @@
 
-module encoder_32_5 (input wire[31:0] in, output reg[4:0] out);
+module Encoder_32_5 (input wire[31:0] in, output reg[4:0] out);
 
 	always@(*) begin
 		case(in)

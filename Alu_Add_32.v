@@ -1,9 +1,9 @@
 
-module Alu_Add #(parameter size = 32)(
-	input [size-1:0] Ra,
-	input [size-1:0] Rb,
+module Alu_Add_32 (
+	input [31:0] Ra,
+	input [31:0] Rb,
 	input wire Cin,
-	output wire [size-1:0] S,
+	output wire [31:0] S,
 	output wire Cout
 );
 
@@ -12,8 +12,8 @@ module Alu_Add #(parameter size = 32)(
 	generate
 		genvar k;
 		
-		for (k = 0, k < size, k = k + 1) begin
-			full_adder(S[k], Ra[K], Rb[k], Cin[k], S[k+1]);
+		for (k = 0; k < 32; k = k + 1) begin: loop
+			full_adder(S[k], Ra[K], Rb[k], Cin, S[k+1]);
 		end
 	endgenerate
 	
@@ -35,7 +35,7 @@ module full_adder(
 	half_adder X (Ra, Rb, S1, C1);
 	half_adder Y (Cin, S1, S, C2);
 	
-	Cout = C1|C2;
+	assign Cout = C1|C2;
 	
 endmodule
 
