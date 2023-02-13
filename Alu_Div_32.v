@@ -15,14 +15,14 @@ module Alu_Div_32(input [31:0] dividend, divisor, input clk, output reg [0:0] do
 		Q = 32'b0;
 		temp = 0; 
 		done = 0;
-		count = 32;
+		count = 33;
 	end
 	
 	// Use a sequential method to achieve non-restoring division
 	always @(posedge clk) begin
 	
 		// Adopt wire values on clk edge
-		if (count == 32) begin 
+		if (count == 33) begin 
 		
 			M = divisor;
 			Q = dividend;
@@ -68,7 +68,10 @@ module Alu_Div_32(input [31:0] dividend, divisor, input clk, output reg [0:0] do
 			
 				// Step 2
 				done = 1;
-		
+				// If A is negative add M
+				if (A[31] == 1) begin
+					A = A + M;
+				end
 			end
 		end
 	end

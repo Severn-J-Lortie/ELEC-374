@@ -2,8 +2,8 @@
 module alu_div_tb;
 
 	wire [31:0] A, Q, dividend, divisor;
-	assign dividend = 32'b11001100;
-	assign divisor = 32'b011;
+	assign dividend = 32'b100;
+	assign divisor = 32'b11;
 	reg Clock;
 	wire done;
 	wire [5:0] count;
