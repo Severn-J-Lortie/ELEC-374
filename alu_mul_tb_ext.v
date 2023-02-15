@@ -3,8 +3,7 @@ module alu_mul_tb_ext;
 
 	wire [63:0] dataout;
 	reg [31:0] A, X;
-	wire [33:0] x, x2, x3;
-	Alu_Mul_32_Ext DUT(A, X, dataout, x, x2, x3);
+	Alu_Mul_32_Ext DUT(A, X, dataout);
 	
 	initial
 		begin
