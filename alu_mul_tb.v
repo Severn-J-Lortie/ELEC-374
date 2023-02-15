@@ -9,8 +9,8 @@ module alu_mul_tb;
 	initial
 		begin
 		
-			A = 32'b100;
-			X = 32'b10;
+			A = 32'H1fff_ffff;
+			X = 32'H1fff_ffff;
 		end
 
 
