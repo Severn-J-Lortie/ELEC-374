@@ -11,7 +11,7 @@ module Alu_Div_32(input [31:0] dividend, divisor, input clk, rst, output reg [0:
 		Q = 32'b0;
 		done = 0;
 		temp = 0;
-		count = 32;
+		count = 6'd32;
 	end
 	
 	// Use a sequential method to achieve non-restoring division
@@ -24,7 +24,7 @@ module Alu_Div_32(input [31:0] dividend, divisor, input clk, rst, output reg [0:
 			Q = 32'b0;
 			done = 0;
 			temp = 0; 
-			count = 32;
+			count = 6'd32;
 		end
 	
 		// Adopt wire values on clk edge
@@ -67,7 +67,7 @@ module Alu_Div_32(input [31:0] dividend, divisor, input clk, rst, output reg [0:
 
 			Q[0] = !A[32];
 			
-			count = count - 1;
+			count = count - 6'b1;
 			
 		end else begin
 		

@@ -1,5 +1,6 @@
 module Alu_Mul_SB_Ext(input A, A_2, P_in, S, C_in, H, D, output P_out, C_out);
 
+	wire cas_in;
 	assign cas_in = S ? A_2 : A;
 	
 	// Basically a full adder. doing this so carry can be used

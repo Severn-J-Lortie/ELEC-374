@@ -9,65 +9,61 @@ module ALU(
 	wire [31:0] sub_out, ror_out, rol_out, or_out, and_out, add_out; 
 	wire [31:0] div_out_lo, div_out_hi, not_out, neg_out, shr_out, shl_out, shra_out;
 	wire [63:0] mul_out; 
-	wire div_rst, div_done, mul_rst, mul_done;
+	wire div_rst, div_done;
 	
 	initial begin
 		C = 64'b0;
 	end
 	
 	always @(*) begin 
-			if (AND) begin 
-				C[31:0] = and_out;
-				C[63:32] = 32'b0;
-			end
-			else if (OR) begin
-				C[31:0] = or_out;
-				C[63:32] = 32'b0;
-			end
-			else if (ADD) begin
-				C[31:0] = add_out;
-				C[63:32] = 32'b0;
-			end
-			else if (MUL) begin
-				C = mul_out;
-			end
-			else if (DIV) begin
-				C[31:0] = div_out_lo;
-				C[63:32] = div_out_hi;
-			end
-			else if (SHR) begin
-				C[31:0] = shr_out;
-				C[63:32] = 32'b0;
-			end
-			else if (SHL) begin
-				C[31:0] = shl_out;
-				C[63:32] = 32'b0;
-			end
-			else if (ROR) begin
-				C[31:0] = ror_out;
-				C[63:32] = 32'b0;
-			end
-			else if (ROL) begin
-				C[31:0] = rol_out;
-				C[63:32] = 32'b0;
-			end
-			else if (NEG) begin
-				C[31:0] = neg_out;
-				C[63:32] = 32'b0;
-			end
-			else if (NOT) begin
-				C[31:0] = not_out;
-				C[63:32] = 32'b0;
-			end
+		C[63:0] = 32'b0;
+		if (AND) begin 
+			C[31:0] = and_out;
 			
-			else if (SHRA) begin 
-				C[31:0] = shra_out;
-				C[63:32] = 32'b0;
-			end
-			else begin
-				C[31:0] = 32'b0;
-				C[63:32] = 32'b0;
-			end
+		end
+		else if (OR) begin
+			C[31:0] = or_out;
+			
+		end
+		else if (ADD) begin
+			C[31:0] = add_out;
+			
+		end
+		else if (MUL) begin
+			C = mul_out;
+		end
+		else if (DIV) begin
+			C[31:0] = div_out_lo;
+			C[63:32] = div_out_hi;
+		end
+		else if (SHR) begin
+			C[31:0] = shr_out;
+			
+		end
+		else if (SHL) begin
+			C[31:0] = shl_out;
+			
+		end
+		else if (ROR) begin
+			C[31:0] = ror_out;
+			C[63:32] = 32'b0;
+		end
+		else if (ROL) begin
+			C[31:0] = rol_out;
+			
+		end
+		else if (NEG) begin
+			C[31:0] = neg_out;
+			
+		end
+		else if (NOT) begin
+			C[31:0] = not_out;
+
+		end
+		
+		else if (SHRA) begin 
+			C[31:0] = shra_out;
+		end
 	end
 	
 	// Operations
@@ -78,11 +74,11 @@ module ALU(
 	Alu_And_32 and_32 (A, B, and_out);
 	Alu_Add_32 add(A, B, 1'b0, add_out);
 	Alu_Div_32 div(A, B, clk, div_rst, div_done, div_out_hi, div_out_lo);
-	Alu_Mul_32 mul(A, B, clk, mul_rst, mul_out, mul_done);
+	Alu_Mul_32_Ext mul(A, B, mul_out);
 	Alu_Not_32 not_32(A, not_out);
 	Alu_Neg_32 neg(A, neg_out);
 	Alu_Shift_Right_32 shift_right(A, B, shr_out);
 	Alu_Shift_Left_32 shift_left(A, B, shl_out);
 	Alu_Shift_Right_Arith_32 shift_right_a(A, B, shra_out);
-
+	
 endmodule

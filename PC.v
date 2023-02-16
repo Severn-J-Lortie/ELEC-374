@@ -1,0 +1,9 @@
+module PC(input [31:0] data, input inc, clk, clr, in, output [31:0] reg_out);
+
+	wire [31:0] reg_in;
+	wire reg_enable;
+	assign reg_enable = in | inc; 
+	assign reg_in = inc == 1 ? reg_out + 1 : data;
+	Register_32 register(clr, clk, reg_enable, reg_in, reg_out);
+
+endmodule

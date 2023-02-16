@@ -36,7 +36,7 @@ module Encoder_32_5 (input wire[31:0] in, output reg[4:0] out);
 		32'b00100000000000000000000000000000 : out <= 5'b11101;
 		32'b01000000000000000000000000000000 : out <= 5'b11110;
 		32'b10000000000000000000000000000000 : out <= 5'b11111;
-		
+		default: out <= 5'b00000;
 		endcase
 	end
 endmodule
