@@ -1,13 +1,13 @@
 `timescale 1ns/10ps
 module alu_div_tb;
 
-	wire [31:0] A, Q, dividend, divisor;
-	assign dividend = 32'b100;
-	assign divisor = 32'b11;
+	wire [31:0] Q, dividend, divisor;
+	wire [32:0] A; 
+	assign dividend = 32'H8000_0100;
+	assign divisor = 32'HFFFF_FFFC; // -2
 	reg Clock;
 	wire done;
-	wire [5:0] count;
-	Alu_Div_32 DUT(dividend, divisor, Clock, done, count, A, Q);
+	Alu_Div_32 DUT(dividend, divisor, Clock, 1'b0, done, A, Q);
 	
 	initial
 		 begin 
