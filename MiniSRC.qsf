@@ -38,7 +38,7 @@
 
 set_global_assignment -name FAMILY "Cyclone III"
 set_global_assignment -name DEVICE EP3C16F484C6
-set_global_assignment -name TOP_LEVEL_ENTITY Alu_Div_32
+set_global_assignment -name TOP_LEVEL_ENTITY ALU
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 13.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "22:15:32  JANUARY 23, 2023"
 set_global_assignment -name LAST_QUARTUS_VERSION 13.1
@@ -118,6 +118,7 @@ set_global_assignment -name EDA_TEST_BENCH_FILE alu_mul_32_tb.v -section_id alu_
 set_global_assignment -name EDA_TEST_BENCH_FILE alu_rotate_right_tb.v -section_id alu_rotate_right_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE alu_rotate_left_tb.v -section_id alu_rotate_left_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE alu_shift_right_arith_32_tb.v -section_id alu_shift_right_arith_tb
+set_global_assignment -name VERILOG_FILE ALU.v
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top

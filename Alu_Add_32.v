@@ -3,8 +3,7 @@ module Alu_Add_32 (
 	input [31:0] Ra,
 	input [31:0] Rb,
 	input wire Cin,
-	output wire [31:0] S,
-	output wire Cout
+	output wire [32:0] S
 );
 
 	assign S[0] = Cin;
@@ -13,7 +12,7 @@ module Alu_Add_32 (
 		genvar k;
 		
 		for (k = 0; k < 32; k = k + 1) begin: loop
-			full_adder(S[k], Ra[K], Rb[k], Cin, S[k+1]);
+			full_adder fa(S[k], Ra[k], Rb[k], Cin, S[k+1]);
 		end
 	endgenerate
 	
