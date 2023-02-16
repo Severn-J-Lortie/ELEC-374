@@ -1,4 +1,4 @@
-module Alu_Mul_32(input [31:0] M, Q, input clk, rst, output reg [63:0] O, output reg ready, output [63:0] x);
+module Alu_Mul_32(input [31:0] M, Q, input clk, rst, output reg [63:0] O, output reg ready);
 
 	reg [32:0] pp, m;
 	reg [5:0] count;
@@ -12,7 +12,7 @@ module Alu_Mul_32(input [31:0] M, Q, input clk, rst, output reg [63:0] O, output
 		O = 64'b0;
 		j = 64'b0;
 	end
-	assign x = q;
+
 	always @(posedge clk) begin
 	
 		if (rst == 1) begin
@@ -21,6 +21,7 @@ module Alu_Mul_32(input [31:0] M, Q, input clk, rst, output reg [63:0] O, output
 			pp = 33'b0; 
 			q = 3'b0; 
 			O = 64'b0;
+			j = 64'b0;
 		end
 	
 		if (count < 16) begin

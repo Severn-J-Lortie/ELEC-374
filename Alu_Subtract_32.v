@@ -1,13 +1,11 @@
 module Alu_Subtract_32 (
-	input wire [31:0] Ra,
-	input wire [31:0] Rb,
-	input wire Cin,
-	output wire [31:0] S,
-	output wire Cout
+	input wire [31:0] X,
+	input wire [31:0] Y,
+	output wire [31:0] Z
 );
 
-	wire [31:0] temp;
-	Alu_Negate(.Ra(Rb), .Rz(temp)); // Can replace with ~ 
-	Alu_Add(.Ra(Ra), .Rb(temp), .Cin(Cin), .S(S), .Cout(Cout)); // Can possibly replace with +
-	
+	// Negate Y and add to X
+	wire [31:0] t;
+	Alu_Neg_32(Y, t);
+	Alu_Add_32(X, t, 1'b0, Z);
 endmodule
