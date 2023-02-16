@@ -1,145 +1,90 @@
+module Alu_Mul_32(input [31:0] M, Q, input clk, rst, output reg [63:0] O, output reg ready, output [63:0] x);
 
-module Alu_Mul_SB(input A, A_2, P_in, S, C_in, H, D, output P_out, C_out);
-
-	assign cas_in = S ? A_2 : A;
-	
-	// Basically a full adder. doing this so carry can be used
-	// H controls whether or not the addition occurs
-	// D controls add/sub
-	// S controls A or 2A (shifted)
-	assign P_out = P_in ^ (cas_in & H) ^ (C_in & H);
-	assign C_out = (P_in ^ D) & (cas_in | C_in) | (cas_in & C_in);
-	
-endmodule
-
-module Alu_Mul_CB(input [2:0] X, output reg H, S, D);
-
-	always @(X) begin
-	//$disp(X);
-		case(X)
-			// 0*A
-			3'b000: begin	
-				H <= 0; S <= 0; D <=0; // rest are don't cares
-			end
-			
-			// A
-			3'b001: begin
-			H <= 1; S <= 0; D <= 0; 
-			end
-			
-			// A
-			3'b010: begin
-				H <= 1; S <= 0; D <= 0; 
-			end
-			
-			// 2*A
-			3'b011: begin
-				H <= 1; S <= 1; D <= 0; 
-			end
-			
-			// -2*A
-			3'b100: begin
-				H <= 1; S <= 1; D <= 1; 
-			end
-			
-			// -A
-			3'b101: begin
-				H <= 1; S <= 0; D <= 1; 
-			end
-			
-			3'b110: begin
-			
-
-				H <= 1; S <= 0; D <= 1; 
-			end
-			
-			3'b111: begin
-				H <= 0; S <=0; D <= 0;
-			end	
-		endcase
+	reg [32:0] pp, m;
+	reg [5:0] count;
+	reg [2:0] q;
+	reg [63:0] j;
+	initial begin
+		pp = 33'b0;
+		count = 6'b0;
+		m = 33'b0;
+		q = 3'b0;
+		O = 64'b0;
+		j = 64'b0;
 	end
-endmodule
-
-module Alu_Mul_Row(input [31:0] A, input [2:0] X, input [31:0] prev, output [31:0] t);
+	assign x = q;
+	always @(posedge clk) begin
 	
+		if (rst == 1) begin
+			count = 6'b0; 
+			ready = 0;
+			pp = 33'b0; 
+			q = 3'b0; 
+			O = 64'b0;
+		end
 	
-	wire S, H, D;
-	Alu_Mul_CB cb(X, H, S, D);
-	wire [31:0] carry;
-	
-	generate 
-		genvar i;
-		for (i = 0; i < 32; i = i + 1) begin: loop
-			if (i == 0) begin
-				Alu_Mul_SB sb(A[i], 1'b0, prev[i], S, 1'b0, H, D, t[i], carry[i]);
-			end
-			else if (i == 31) begin
-				Alu_Mul_SB sb(A[i], A[i], prev[i], S, carry[i-1], H, D, t[i], carry[i]);
+		if (count < 16) begin
+			// Setup
+			m = {M[31], M[31:0]}; // sign extend by 2
+			
+			if (count == 0) begin
+				q = {Q[1:0], 1'b0};
 			end
 			else begin
-				Alu_Mul_SB sb(A[i], A[i - 1], prev[i], S, carry[i-1], H, D, t[i], carry[i]);
+				
+				q = {Q[count + count + 1], Q[count + count], Q[count + count - 1]};
+				
 			end
+			// Decode q
+			case(q)
+				// 0*A
+				3'b000: begin	
+					m = 33'b0;
+				end
+				// 2*A
+				3'b011: begin
+					m = m << 1;
+				end
+				// -2*A
+				3'b100: begin
+					m = ~(m << 1) + 1; 
+				end
+				// -A
+				3'b101: begin
+					m = ~m + 1;
+				end
+				// -A
+				3'b110: begin
+					m = ~m + 1;
+				end
+				// 0*A
+				3'b111: begin
+					m = 33'b0;
+				end	
+			endcase
+		
+			// Right shift the partial product/output and save the output
+			
+			pp = pp + m; 
+			
+			j = O >> 2;
+			O = j;
+			//O = O >> 2;
+			O[31:30] = pp[1:0];
+
+			pp = pp >> 2;
+			pp = {pp[30], pp[30], pp[30:0]};
+			
+			if (count == 15) begin 
+				
+				O[63:32] = pp[31:0];
+			end
+			
+			// Increment count
+			count = count + 6'd1;
 		end
-	endgenerate
-endmodule
-
-module Alu_Mul_32 (input [31:0] A, X, output [63:0] O, output [31:0] x);
-
-	// A --> multiplicand
-	// X --> multiplier
-	// O --> output
-	// Can add to 32 bit numbers (with 31 being the sign extension)
-	
-	wire [31:0] t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16;
-	Alu_Mul_Row r1(A, {X[1:0], 1'b0}, 32'b0, t1);
-
-	
-	assign O[1:0] = t1[1:0];
-	Alu_Mul_Row r2(A, X[3:1], {t1[31], t1[31], t1[31], t1[30:2]}, t2);
-	
-	assign O[3:2] = t2[1:0];
-	Alu_Mul_Row r3(A, X[5:3], {t2[31], t2[31], t2[31], t2[30:2]}, t3);
-	
-	assign O[5:4] = t3[1:0];
-	Alu_Mul_Row r4(A, X[7:5], {t3[31], t3[31], t3[31], t3[30:2]}, t4);
-
-	assign O[7:6] = t4[1:0];
-	Alu_Mul_Row r5(A, X[9:7], {t4[31], t4[31], t4[31], t4[30:2]}, t5);
-
-	assign O[9:8] = t5[1:0];
-	Alu_Mul_Row r6(A, X[11:9], {t5[31], t5[31], t5[31], t5[30:2]}, t6);
-
-	assign O[11:10] = t6[1:0];
-	Alu_Mul_Row r7(A, X[13:11], {t6[31], t6[31], t6[31], t6[30:2]}, t7);
-
-	assign O[13:12] = t7[1:0];
-	Alu_Mul_Row r8(A, X[15:13], {t7[31], t7[31], t7[31], t7[30:2]}, t8);
-
-	assign O[15:14] = t8[1:0];
-	Alu_Mul_Row r9(A, X[17:15], {t8[31], t8[31], t8[31], t8[30:2]}, t9);
-
-	assign O[17:16] = t9[1:0];
-	Alu_Mul_Row r10(A, X[19:17], {t9[31], t9[31], t9[31], t9[30:2]}, t10);
-
-	assign O[19:18] = t10[1:0];
-	Alu_Mul_Row r11(A, X[21:19], {t10[31], t10[31], t10[31], t10[30:2]}, t11);
-
-	assign O[21:20] = t11[1:0];
-	Alu_Mul_Row r12(A, X[23:21], {t11[31], t11[31], t11[31], t11[30:2]}, t12);
-
-	assign O[23:22] = t12[1:0];
-	Alu_Mul_Row r13(A, X[25:23], {t12[31], t12[31], t12[31], t12[30:2]}, t13);
-
-	assign O[25:24] = t13[1:0];
-	Alu_Mul_Row r14(A, X[27:25], {t13[31], t13[31], t13[31], t13[30:2]}, t14);
-
-	assign O[27:26] = t14[1:0];
-	Alu_Mul_Row r15(A, X[29:27], {t14[31], t14[31], t14[31], t14[30:2]}, t15);
-	
-	assign O[29:28] = t15[1:0];
-	Alu_Mul_Row r16(A, X[31:29], {t15[31], t15[31], t15[31], t15[30:2]}, t16);
-	assign O[61:30] = t16;
-
-	assign x = t2;
-
+		else begin 
+			ready = 1;
+		end
+	end
 endmodule
