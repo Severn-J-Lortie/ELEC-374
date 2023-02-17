@@ -1,6 +1,6 @@
 module Datapath(
 input PCout, MDRout, Zhighout, Zlowout, HIin, LOin,
-input MDRin, MARin,
+input MDRin, MARin, div_rst, div_rdy,
 input Zin, Yin, IRin, PCin, Read, clr, clk, IncPC,
 
 input AND, OR, ADD, SUB, MUL, DIV, SHR, 
@@ -27,7 +27,10 @@ output [31:0] HIdataout, LOdataout,
 output [31:0] IRdataout, BusMuxOut, Zlowdataout, 
 output [31:0] Zhighdataout, Ydataout, PCdataout,
 output [31:0] MARdataout, MDRdataout, Mdatain,
-output [63:0] Cout
+output [63:0] Cout,
+
+// Output control signals
+output div_done
 );
 
 	// Bus wire
@@ -63,7 +66,8 @@ output [63:0] Cout
 
 	
 	// ALU
-	ALU alu(AND, OR, ADD, SUB, MUL, DIV, SHR, SHL, ROR, ROL, NEG, NOT, SHRA, clk, Ydataout, BusMuxOut, Cout);
+	ALU alu(AND, OR, ADD, SUB, MUL, DIV, SHR, SHL, ROR, ROL, NEG, NOT, SHRA, 
+			clk, div_done, div_rst, Ydataout, BusMuxOut, Cout);
 	
 	Encoder_32_5 BusEncoder({12'b0, MDRout, PCout, Zlowout, Zhighout, R15out, R14out, R13out, R12out, R11out, 
 			R10out, R9out, R8out, R7out, R6out, R5out, R4out, R3out, R2out, R1out, R0out}, BusEncoderOut);

@@ -126,7 +126,7 @@ module and_tb;
 						R2out<= 1; Yin <= 1;
 					end
 					T4: begin
-						R2out <= 0;
+						R2out <= 0; Yin <= 0; 
 						R4out<= 1; AND <= 1; Zin <= 1;
 						
 						// Deassert 

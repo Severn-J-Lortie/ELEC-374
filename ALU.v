@@ -1,7 +1,7 @@
 module ALU(
 	input AND, OR, ADD, SUB, MUL, DIV, SHR, 
 	input SHL, ROR, ROL, NEG, NOT, SHRA, 
-	input clk,
+	input clk, div_done, div_rst,
 	input [31:0] A, input [31:0] B, 
 	output reg [63:0] C
 );
@@ -9,7 +9,6 @@ module ALU(
 	wire [31:0] sub_out, ror_out, rol_out, or_out, and_out, add_out; 
 	wire [31:0] div_out_lo, div_out_hi, not_out, neg_out, shr_out, shl_out, shra_out;
 	wire [63:0] mul_out; 
-	wire div_rst, div_done;
 	
 	initial begin
 		C = 64'b0;
@@ -75,7 +74,7 @@ module ALU(
 	Alu_Or_32 or_32(A, B, or_out);
 	Alu_And_32 and_32 (A, B, and_out);
 	Alu_Add_32 add(A, B, 1'b0, add_out);
-	Alu_Div_32 div(A, B, clk, div_rst, div_done, div_out_hi, div_out_lo);
+	Alu_Div_32 div(A, B, clk, div_rst, DIV, div_done, div_out_hi, div_out_lo);
 	Alu_Mul_32_Ext mul(A, B, mul_out);
 	Alu_Not_32 not_32(A, not_out);
 	Alu_Neg_32 neg(A, neg_out);

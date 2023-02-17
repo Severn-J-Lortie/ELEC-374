@@ -126,7 +126,7 @@ module add_tb;
 						R4out<= 1; Yin <= 1;
 					end
 					T4: begin
-						R4out <= 0;
+						R4out <= 0; Yin <= 0;
 						R5out<= 1; ADD <= 1; Zin <= 1;
 						
 						// Deassert 
