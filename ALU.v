@@ -77,7 +77,7 @@ module ALU(
 	Alu_Div_32 div(A, B, clk, div_rst, DIV, div_done, div_out_hi, div_out_lo);
 	Alu_Mul_32_Ext mul(A, B, mul_out);
 	Alu_Not_32 not_32(A, not_out);
-	Alu_Neg_32 neg(A, neg_out);
+	Alu_Neg_32 neg(B, neg_out);
 	Alu_Shift_Right_32 shift_right(A, B, shr_out);
 	Alu_Shift_Left_32 shift_left(A, B, shl_out);
 	Alu_Shift_Right_Arith_32 shift_right_a(A, B, shra_out);
