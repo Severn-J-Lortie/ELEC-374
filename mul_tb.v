@@ -116,7 +116,7 @@ module mul_tb;
 						MARin <= 0;
 						 
 						/*Zlowout<= 1; PCin <= 1;*/ Read <= 1; MDRin <= 1;
-						Mdatain <= 32'h4A920000; //opcode for “and R5, R2, R4”
+						Mdatain <= 32'h7B380000; 
 						#25
 						IncPC <= 0;
 					end
