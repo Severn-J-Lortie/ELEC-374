@@ -39,8 +39,6 @@ output [31:0] remainder, output [31:0] quotient);
 			
 				M = divisor;
 				Q = dividend;
-				$display(M);
-				$display(Q);
 				
 				// Make positive
 				if (M[31] == 1) begin 
@@ -77,7 +75,6 @@ output [31:0] remainder, output [31:0] quotient);
 				Q[0] = !A[32];
 				
 				count = count - 6'b1;
-				$display(count);
 			end else begin
 			
 				// Step 2
