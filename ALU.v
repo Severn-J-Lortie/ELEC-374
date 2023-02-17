@@ -17,51 +17,53 @@ module ALU(
 	
 	always @(*) begin 
 		C[63:0] = 32'b0;
-		if (AND) begin 
+		if (AND == 1) begin 
 			C[31:0] = and_out;
 			
 		end
-		else if (OR) begin
+		else if (OR == 1) begin
 			C[31:0] = or_out;
 			
 		end
-		else if (ADD) begin
+		else if (ADD == 1) begin
 			C[31:0] = add_out;
-			
 		end
-		else if (MUL) begin
+		else if (SUB == 1) begin
+			C[31:0] = sub_out;
+		end
+		else if (MUL == 1) begin
 			C = mul_out;
 		end
-		else if (DIV) begin
+		else if (DIV == 1) begin
 			C[31:0] = div_out_lo;
 			C[63:32] = div_out_hi;
 		end
-		else if (SHR) begin
+		else if (SHR == 1) begin
 			C[31:0] = shr_out;
 			
 		end
-		else if (SHL) begin
+		else if (SHL == 1) begin
 			C[31:0] = shl_out;
 			
 		end
-		else if (ROR) begin
+		else if (ROR == 1) begin
 			C[31:0] = ror_out;
 			C[63:32] = 32'b0;
 		end
-		else if (ROL) begin
+		else if (ROL == 1) begin
 			C[31:0] = rol_out;
 			
 		end
-		else if (NEG) begin
+		else if (NEG == 1) begin
 			C[31:0] = neg_out;
 			
 		end
-		else if (NOT) begin
+		else if (NOT == 1) begin
 			C[31:0] = not_out;
 
 		end
 		
-		else if (SHRA) begin 
+		else if (SHRA == 1) begin 
 			C[31:0] = shra_out;
 		end
 	end

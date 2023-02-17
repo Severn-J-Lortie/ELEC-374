@@ -2,8 +2,6 @@
 module Encoder_32_5 (input [31:0] in, output reg[4:0] out);
 
 	always@(*) begin
-		$display("Encoder");
-		$display(in);
 		casez(in)
 		32'b00000000000000000000000000000001 : out <= 5'b00000;
 		32'b00000000000000000000000000000010 : out <= 5'b00001;

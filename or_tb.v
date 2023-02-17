@@ -1,8 +1,8 @@
 `timescale 1ns/10ps
 
-module datapath_and_inst(
+module datapath_or_inst(
 input PCout, Zlowout, MDRout, R2out, R4out, MARin, 
-input Zin, PCin, MDRin, IRin, Yin, IncPC,Read, AND,R5in, 
+input Zin, PCin, MDRin, IRin, Yin, IncPC,Read, OR,R5in, 
 input R2in, R4in, Clock, clr,
 input [31:0] Mdatain,
 output [31:0] R2, R4, R5, BusMuxOut, MDR, PC, MAR, IR, Zlow
@@ -12,7 +12,7 @@ output [31:0] R2, R4, R5, BusMuxOut, MDR, PC, MAR, IR, Zlow
 	Datapath DUT(.PCout(PCout), .Zlowout(Zlowout), .MDRout(MDRout), .R2out(R2out), 
 			.R4out(R4out), .MARin(MARin), .Zin(Zin), .PCin(PCin), 
 			.MDRin(MDRin), .IRin(IRin), .Yin(Yin), .IncPC(IncPC), .Read(Read), 
-			.AND(AND),.R5in(R5in), .R2in(R2in), .R4in(R4in), .clk(Clock), .clr(clr), .Mdatain(Mdatain),
+			.OR(OR),.R5in(R5in), .R2in(R2in), .R4in(R4in), .clk(Clock), .clr(clr), .Mdatain(Mdatain),
 			.R2dataout(R2), .R4dataout(R4), .R5dataout(R5), .BusMuxOut(BusMuxOut), .MDRdataout(MDR),
 			.R0out(0), .R1out(0), .R3out(0), .R5out(0), .R6out(0), .R7out(0),
 			.R8out(0), .R9out(0), .R10out(0), .R11out(0), .R12out(0), 
@@ -20,13 +20,13 @@ output [31:0] R2, R4, R5, BusMuxOut, MDR, PC, MAR, IR, Zlow
 			.IRdataout(IR), .Zlowdataout(Zlow));
 endmodule 
 
-module and_tb;
+module or_tb;
    reg PCout, Zlowout, MDRout, R2out, R4out;
     
 	// add any other signals to see in your simulation
 	wire [31:0] R2, R4, R5, BusMuxOut, MDR, PC, MAR, IR, Zlow;
    reg MARin, Zin, PCin, MDRin, IRin, Yin;
-   reg IncPC,Read, AND, R5in, R2in, R4in;
+   reg IncPC,Read, OR, R5in, R2in, R4in;
    reg Clock, clr;
    reg[31:0] Mdatain;
 
@@ -35,8 +35,8 @@ module and_tb;
 
    reg[3:0] Present_state= Default;
 
-	datapath_and_inst DUT(PCout, Zlowout, MDRout, R2out, R4out, MARin, Zin, PCin, 
-				MDRin, IRin, Yin, IncPC,Read, AND,R5in, R2in, R4in,Clock, clr, Mdatain, 
+	datapath_or_inst DUT(PCout, Zlowout, MDRout, R2out, R4out, MARin, Zin, PCin, 
+				MDRin, IRin, Yin, IncPC,Read, OR, R5in, R2in, R4in,Clock, clr, Mdatain, 
 				R2, R4, R5, BusMuxOut, MDR, PC, MAR, IR, Zlow);
 	
 	// add test logic here
@@ -71,7 +71,7 @@ module and_tb;
 						PCout <= 0; Zlowout <= 0; MDRout<= 0;  //initialize the signals
 						R2out <= 0; R4out <= 0; MARin <= 0; Zin <= 0;
 						PCin <=0; MDRin <= 0; IRin  <= 0; Yin <= 0;
-						IncPC <= 0; Read <= 0; AND <= 0;
+						IncPC <= 0; Read <= 0; OR <= 0;
 						R5in <= 0; R2in <= 0; R4in <= 0; Mdatain <= 32'h00000000;
 						#5
 						clr <= 0;
@@ -127,7 +127,7 @@ module and_tb;
 					end
 					T4: begin
 						R2out <= 0;
-						R4out<= 1; AND <= 1; Zin <= 1;
+						R4out<= 1; OR <= 1; Zin <= 1;
 						
 						// Deassert 
 						#25 Zin <= 0; 

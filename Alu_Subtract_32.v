@@ -8,4 +8,5 @@ module Alu_Subtract_32 (
 	wire [31:0] t;
 	Alu_Neg_32 neg(Y, t);
 	Alu_Add_32 add(X, t, 1'b0, Z);
+
 endmodule

@@ -8,8 +8,6 @@ module Multiplexer_32_1 (
 );
 
 	always@(*) begin
-		$display("Mult");
-		$display(select);
 		case(select)
 			5'd0 : MuxOut <= in0;
 			5'd1 : MuxOut <= in1;

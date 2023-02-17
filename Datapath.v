@@ -59,8 +59,8 @@ output [63:0] Cout
 	Register_32 HI(clr, clk, HIin, BusMuxOut, HIdataout);
 	Register_32 LO(clr, clk, LOin, BusMuxOut, LOdataout);
 	Z z_reg(Cout, Zlowout, Zhighout, clr, clk, Zin, Zlowdataout, Zhighdataout);
-	//PC pc(BusMuxOut, IncPC, clk, clr, PCin, PCdataout);
-	Register_32 PC(clr, clk, PCin, BusMuxOut, PCdataout);
+	PC pc(BusMuxOut, IncPC, clk, clr, PCin, PCdataout);
+
 	
 	// ALU
 	ALU alu(AND, OR, ADD, SUB, MUL, DIV, SHR, SHL, ROR, ROL, NEG, NOT, SHRA, clk, Ydataout, BusMuxOut, Cout);
