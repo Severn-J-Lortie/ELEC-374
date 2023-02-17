@@ -1,9 +1,15 @@
-module Alu_Div_32(input [31:0] dividend, divisor, input clk, rst, output reg [0:0] done, output reg [32:0] A, output reg [31:0] Q);
+module Alu_Div_32(input [31:0] dividend, divisor, input clk, rst, output reg [0:0] done, 
+output [31:0] remainder, output [31:0] quotient);
 
+	reg [31:0] Q;
+	reg [32:0] A;
 	reg [31:0] M;
 	reg[5:0] count;
 	reg temp;
 	integer i; 
+	
+	assign remainder[31:0] = A[31:0];
+	assign quotient = Q;
 	
 	initial begin
 		A = 33'b0;
@@ -50,9 +56,9 @@ module Alu_Div_32(input [31:0] dividend, divisor, input clk, rst, output reg [0:
 		
 			// Step 1: Shift A and Q left
 			temp = Q[31];
-			$display(A);
+		
 			A = A << 1;
-			$display(A);
+			
 			Q = Q << 1;
 			A[0] = temp; 
 			

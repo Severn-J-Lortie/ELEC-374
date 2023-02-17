@@ -18,7 +18,7 @@ input R10in, R11in, R12in, R13in, R14in, R15in,
 output [31:0] R0dataout, R1dataout, R2dataout,
 output [31:0] R3dataout, R4dataout, R5dataout,
 output [31:0] R6dataout, R7dataout, R8dataout,
-output [31:0] R9dataout, R10dataout, R11dataou,
+output [31:0] R9dataout, R10dataout, R11dataout,
 output [31:0] R12dataout, R13dataout, R14dataout,
 output [31:0] R15dataout, 
 
@@ -27,7 +27,7 @@ output [31:0] HIdataout, LOdataout,
 output [31:0] IRdataout, BusMuxOut, Zlowdataout, 
 output [31:0] Zhighdataout, Ydataout, PCdataout,
 output [31:0] MARdataout, MDRdataout, Mdatain,
-output [31:0] Cout
+output [63:0] Cout
 );
 
 	// Bus wire
@@ -59,18 +59,19 @@ output [31:0] Cout
 	Register_32 HI(clr, clk, HIin, BusMuxOut, HIdataout);
 	Register_32 LO(clr, clk, LOin, BusMuxOut, LOdataout);
 	Z z_reg(Cout, Zlowout, Zhighout, clr, clk, Zin, Zlowdataout, Zhighdataout);
-	PC pc(BusMuxOut, IncPC, clk, clr, PCin, PCdataout);
+	//PC pc(BusMuxOut, IncPC, clk, clr, PCin, PCdataout);
+	Register_32 PC(clr, clk, PCin, BusMuxOut, PCdataout);
 	
 	// ALU
 	ALU alu(AND, OR, ADD, SUB, MUL, DIV, SHR, SHL, ROR, ROL, NEG, NOT, SHRA, clk, Ydataout, BusMuxOut, Cout);
 	
-	Encoder_32_5 BusEncoder({R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, 
-	R10out, R11out, R12out, R13out, R14out, R15out, Zhighout, Zlowout, PCout, MDRout, 12'b0}, BusEncoderOut);
+	Encoder_32_5 BusEncoder({12'b0, MDRout, PCout, Zlowout, Zhighout, R15out, R14out, R13out, R12out, R11out, 
+			R10out, R9out, R8out, R7out, R6out, R5out, R4out, R3out, R2out, R1out, R0out}, BusEncoderOut);
 	
 	Multiplexer_32_1 BusMux(BusEncoderOut, R0dataout, R1dataout, R2dataout, R3dataout, R4dataout, 
-	R5dataout, R6dataout, R7dataout, R8dataout, R8dataout, R9dataout, R10dataout, R11dataout, 
+	R5dataout, R6dataout, R7dataout, R8dataout, R9dataout, R10dataout, R11dataout, 
 	R12dataout, R13dataout, R14dataout, R15dataout, Zhighdataout, Zlowdataout, PCdataout, 
-	MDRdataout, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, BusMuxOut);
+	MDRdataout, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, BusMuxOut);
 	
 
 endmodule
