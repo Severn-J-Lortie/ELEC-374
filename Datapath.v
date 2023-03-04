@@ -12,6 +12,7 @@ input R10out, R11out, R12out, R13out, R14out, R15out,
 input R0in, R1in, R2in, R3in, R4in, 
 input R5in, R6in, R7in, R8in, R9in, 
 input R10in, R11in, R12in, R13in, R14in, R15in,
+input BAout, InPortout, InPortinput, OutPortin,
 
 // Export these signals for the waveform demos
 // general purpose registers
@@ -27,6 +28,7 @@ output [31:0] HIdataout, LOdataout,
 output [31:0] IRdataout, BusMuxOut, Zlowdataout, 
 output [31:0] Zhighdataout, Ydataout, PCdataout,
 output [31:0] MARdataout, MDRdataout, Mdatain,
+output [31:0] InPortdataout, OutPortdataout,
 output [63:0] Cout,
 
 // Output control signals
@@ -36,8 +38,15 @@ output div_done
 	// Bus wire
 	wire [4:0] BusEncoderOut;
 	
+	// Wire from register R0 to BusMuxInR0
+	wire [31:0] R0OutputToBusMuxIn;
+	
+	// Clear R0DataOut when BAout is asserted
+	assign R0dataout = R0OutputToBusMuxIn & {32{!BAout}};
+	
+	
 	// General purpose registers
-	Register_32 R0(clr, clk, R0in, BusMuxOut, R0dataout);
+	Register_32 R0(clr, clk, R0in, BusMuxOut, R0OutputToBusMuxIn);
 	Register_32 R1(clr, clk, R1in, BusMuxOut, R1dataout);
 	Register_32 R2(clr, clk, R2in, BusMuxOut, R2dataout);
 	Register_32 R3(clr, clk, R3in, BusMuxOut, R3dataout);
@@ -63,19 +72,21 @@ output div_done
 	Register_32 LO(clr, clk, LOin, BusMuxOut, LOdataout);
 	Z z_reg(Cout, Zlowout, Zhighout, clr, clk, Zin, Zlowdataout, Zhighdataout);
 	PC pc(BusMuxOut, IncPC, clk, clr, PCin, PCdataout);
+	Register_32 InputPort(clr, clk, 1'b1, InPortinput, InPortdataout);
+	Register_32 OutputPort(clr, clk, OutPortin, BusMuxOut, OutPortdataout);
 
 	
 	// ALU
 	ALU alu(AND, OR, ADD, SUB, MUL, DIV, SHR, SHL, ROR, ROL, NEG, NOT, SHRA, 
 			clk, div_done, div_rst, Ydataout, BusMuxOut, Cout);
 	
-	Encoder_32_5 BusEncoder({12'b0, MDRout, PCout, Zlowout, Zhighout, R15out, R14out, R13out, R12out, R11out, 
+	Encoder_32_5 BusEncoder({11'b0, InPortout, MDRout, PCout, Zlowout, Zhighout, R15out, R14out, R13out, R12out, R11out, 
 			R10out, R9out, R8out, R7out, R6out, R5out, R4out, R3out, R2out, R1out, R0out}, BusEncoderOut);
 	
 	Multiplexer_32_1 BusMux(BusEncoderOut, R0dataout, R1dataout, R2dataout, R3dataout, R4dataout, 
 	R5dataout, R6dataout, R7dataout, R8dataout, R9dataout, R10dataout, R11dataout, 
 	R12dataout, R13dataout, R14dataout, R15dataout, Zhighdataout, Zlowdataout, PCdataout, 
-	MDRdataout, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, BusMuxOut);
+	MDRdataout, InPortdataout, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, 32'b0, BusMuxOut);
 	
 
 endmodule
