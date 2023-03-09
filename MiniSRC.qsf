@@ -38,7 +38,7 @@
 
 set_global_assignment -name FAMILY "Cyclone III"
 set_global_assignment -name DEVICE EP3C16F484C6
-set_global_assignment -name TOP_LEVEL_ENTITY RAM_32_512
+set_global_assignment -name TOP_LEVEL_ENTITY datapath_ld_inst
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 13.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "22:15:32  JANUARY 23, 2023"
 set_global_assignment -name LAST_QUARTUS_VERSION 13.1
@@ -52,7 +52,7 @@ set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
 set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
-set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH select_encode_tb -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH ld_tb -section_id eda_simulation
 set_global_assignment -name EDA_TEST_BENCH_NAME register_tb -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id register_tb
 set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "500 ns" -section_id register_tb
@@ -61,6 +61,84 @@ set_global_assignment -name EDA_TEST_BENCH_NAME alu_div_tb -section_id eda_simul
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id alu_div_tb
 set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "700 ns" -section_id alu_div_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME alu_div_tb -section_id alu_div_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME alu_mul_tb_array -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id alu_mul_tb_array
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME alu_mul_tb_array -section_id alu_mul_tb_array
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "500 ns" -section_id alu_mul_tb_array
+set_global_assignment -name EDA_TEST_BENCH_NAME alu_mul_32_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id alu_mul_32_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "700 ns" -section_id alu_mul_32_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME alu_mul_32_tb -section_id alu_mul_32_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME alu_rotate_right_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id alu_rotate_right_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME alu_rotate_right_tb -section_id alu_rotate_right_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "500 ns" -section_id alu_rotate_right_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME alu_rotate_left_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id alu_rotate_left_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME alu_rotate_left_tb -section_id alu_rotate_left_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME alu_shift_right_arith_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id alu_shift_right_arith_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME alu_shift_right_arith_tb -section_id alu_shift_right_arith_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "500 ns" -section_id alu_rotate_left_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "500 ns" -section_id alu_shift_right_arith_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME and_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id and_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id and_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME and_tb -section_id and_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME or_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id or_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id or_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME or_tb -section_id or_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME add_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id add_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id add_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME add_tb -section_id add_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME sub_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id sub_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id sub_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME sub_tb -section_id sub_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME mul_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id mul_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "560 ns" -section_id mul_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME mul_tb -section_id mul_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME div_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id div_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "1240 ns" -section_id div_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME div_tb -section_id div_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME shr_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id shr_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME shr_tb -section_id shr_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id shr_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME shl_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id shl_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id shl_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME shl_tb -section_id shl_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME shra_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id shra_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id shra_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME shra_tb -section_id shra_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME ror_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id ror_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id ror_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME ror_tb -section_id ror_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME rol_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id rol_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id rol_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME rol_tb -section_id rol_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME neg_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id neg_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id neg_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME neg_tb -section_id neg_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME not_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id not_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id not_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME not_tb -section_id not_tb
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
+set_global_assignment -name EDA_TEST_BENCH_NAME select_encode_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id select_encode_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "500 ns" -section_id select_encode_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME select_encode_tb -section_id select_encode_tb
+set_global_assignment -name MIF_FILE memory_init_file.mif
 set_global_assignment -name VERILOG_FILE alu_mul_tb_array.v
 set_global_assignment -name VERILOG_FILE Alu_Mul_32_Array.v
 set_global_assignment -name VERILOG_FILE Z.v
@@ -79,112 +157,38 @@ set_global_assignment -name VERILOG_FILE Alu_And_32.v
 set_global_assignment -name VERILOG_FILE Alu_Add_32.v
 set_global_assignment -name VERILOG_FILE Alu_Div_32.v
 set_global_assignment -name VERILOG_FILE alu_div_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME alu_mul_tb_array -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id alu_mul_tb_array
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME alu_mul_tb_array -section_id alu_mul_tb_array
 set_global_assignment -name VERILOG_FILE Alu_Mul_32.v
 set_global_assignment -name VERILOG_FILE alu_mul_32_tb.v
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "500 ns" -section_id alu_mul_tb_array
-set_global_assignment -name EDA_TEST_BENCH_NAME alu_mul_32_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id alu_mul_32_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "700 ns" -section_id alu_mul_32_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME alu_mul_32_tb -section_id alu_mul_32_tb
 set_global_assignment -name VERILOG_FILE alu_rotate_right_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME alu_rotate_right_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id alu_rotate_right_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME alu_rotate_right_tb -section_id alu_rotate_right_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "500 ns" -section_id alu_rotate_right_tb
 set_global_assignment -name VERILOG_FILE alu_rotate_left_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME alu_rotate_left_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id alu_rotate_left_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME alu_rotate_left_tb -section_id alu_rotate_left_tb
 set_global_assignment -name VERILOG_FILE Alu_Not_32.v
 set_global_assignment -name VERILOG_FILE Alu_Neg_32.v
 set_global_assignment -name VERILOG_FILE Alu_Shift_Right_32.v
 set_global_assignment -name VERILOG_FILE Alu_Shift_Left_32.v
 set_global_assignment -name VERILOG_FILE Alu_Shift_Right_Arith_32.v
 set_global_assignment -name VERILOG_FILE alu_shift_right_arith_32_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME alu_shift_right_arith_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id alu_shift_right_arith_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME alu_shift_right_arith_tb -section_id alu_shift_right_arith_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "500 ns" -section_id alu_rotate_left_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "500 ns" -section_id alu_shift_right_arith_tb
 set_global_assignment -name VERILOG_FILE ALU.v
 set_global_assignment -name VERILOG_FILE PC.v
 set_global_assignment -name VERILOG_FILE and_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME and_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id and_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id and_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME and_tb -section_id and_tb
 set_global_assignment -name VERILOG_FILE or_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME or_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id or_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id or_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME or_tb -section_id or_tb
 set_global_assignment -name VERILOG_FILE add_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME add_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id add_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id add_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME add_tb -section_id add_tb
 set_global_assignment -name VERILOG_FILE sub_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME sub_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id sub_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id sub_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME sub_tb -section_id sub_tb
 set_global_assignment -name VERILOG_FILE mul_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME mul_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id mul_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "560 ns" -section_id mul_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME mul_tb -section_id mul_tb
 set_global_assignment -name VERILOG_FILE div_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME div_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id div_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "1240 ns" -section_id div_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME div_tb -section_id div_tb
 set_global_assignment -name VERILOG_FILE shr_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME shr_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id shr_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME shr_tb -section_id shr_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id shr_tb
 set_global_assignment -name VERILOG_FILE shl_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME shl_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id shl_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id shl_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME shl_tb -section_id shl_tb
 set_global_assignment -name VERILOG_FILE shra_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME shra_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id shra_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id shra_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME shra_tb -section_id shra_tb
 set_global_assignment -name VERILOG_FILE ror_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME ror_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id ror_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id ror_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME ror_tb -section_id ror_tb
 set_global_assignment -name VERILOG_FILE rol_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME rol_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id rol_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id rol_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME rol_tb -section_id rol_tb
 set_global_assignment -name VERILOG_FILE neg_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME neg_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id neg_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id neg_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME neg_tb -section_id neg_tb
 set_global_assignment -name VERILOG_FILE not_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME not_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id not_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "520 ns" -section_id not_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME not_tb -section_id not_tb
 set_global_assignment -name VERILOG_FILE Select_Encode.v
 set_global_assignment -name VERILOG_FILE Decoder_4_16.v
-set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
 set_global_assignment -name VERILOG_FILE select_and_encode_tb.v
-set_global_assignment -name EDA_TEST_BENCH_NAME select_encode_tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id select_encode_tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "500 ns" -section_id select_encode_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME select_encode_tb -section_id select_encode_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE select_and_encode_tb.v -section_id select_encode_tb
+set_global_assignment -name VERILOG_FILE Decoder_2_4.v
+set_global_assignment -name VERILOG_FILE CON_FF.v
+set_global_assignment -name VERILOG_FILE RAM_32_512.v
+set_global_assignment -name VERILOG_FILE ld_tb.v
 set_global_assignment -name EDA_TEST_BENCH_FILE register_tb.v -section_id register_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE alu_div_tb.v -section_id alu_div_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE alu_mul_tb_array.v -section_id alu_mul_tb_array
@@ -205,9 +209,12 @@ set_global_assignment -name EDA_TEST_BENCH_FILE ror_tb.v -section_id ror_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE rol_tb.v -section_id rol_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE neg_tb.v -section_id neg_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE not_tb.v -section_id not_tb
-set_global_assignment -name VERILOG_FILE Decoder_2_4.v
-set_global_assignment -name VERILOG_FILE CON_FF.v
-set_global_assignment -name VERILOG_FILE RAM_32_512.v
+set_global_assignment -name EDA_TEST_BENCH_FILE select_and_encode_tb.v -section_id select_encode_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME ld_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id ld_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "500 ns" -section_id ld_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME ld_tb -section_id ld_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE ld_tb.v -section_id ld_tb
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top

@@ -4,7 +4,7 @@ module select_encode_tb;
 	reg [31:0] IR_bits;
 	reg Gra, Grb, Grc, Rin;
 	reg Rout, BAout;
-	wire [31:0] register_ins, register_outs;
+	wire [15:0] register_ins, register_outs;
 	
 	Select_Encode DUT(IR_bits, Gra, Grb, Grc, Rin, Rout, BAout, register_outs, register_ins);
 	
