@@ -37,7 +37,7 @@ module datapath_brzr_inst(
 		.PCdataout(PCdataout)
 	);
 	defparam DUT.I_PC = 32'b1001;
-	defparam DUT.I_R6 = 32'b0;
+	defparam DUT.I_R6 = 32'b1;
 endmodule 
 
 module brzr_tb;

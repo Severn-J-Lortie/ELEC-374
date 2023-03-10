@@ -37,7 +37,7 @@ module datapath_brmi_inst(
 		.PCdataout(PCdataout)
 	);
 	defparam DUT.I_PC = 32'b1100;
-	defparam DUT.I_R6 = 32'hFFFFDEBD;
+	defparam DUT.I_R6 = 32'h4;
 endmodule 
 
 module brmi_tb;

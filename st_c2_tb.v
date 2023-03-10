@@ -44,7 +44,7 @@ module st_c2_tb;
 		any changed signals here in the port list for
 		the DUT instance, as well as the DUT in the testbench
 		
-		Instruction: st $90, R4 --> R4 = $67
+		Instruction: st $90(R4), R4 --> R4 = $67
 	*/
 	// Input control signals
    reg PCout, MARin, IncPC, Zin, Zlowout; 

@@ -25,6 +25,12 @@ module RAM_32_512(input Read, Write, input [31:0] data_in, input[8:0] address, i
 		mem[10] = 32'h9B080019; // brnz R6, 25
 		mem[11] = 32'h9B100019; // brpl R6, 25
 		mem[12] = 32'h9B180019;	// brmi R6, 25
+		mem[13] = 32'hA1000000; // jr R2
+		mem[14] = 32'hA9000000; // jal R2	
+		mem[15] = 32'hC2000000; // mfhi R4
+		mem[16] = 32'hCB000000; // mflo R4
+		mem[17] = 32'hB9000000; // out R2 -> R2 = $1F
+		mem[18] = 32'hB1800000;	
 	/* Data */
 		mem['h50] = 32'h0000A0ED;
 		mem['h75] = 32'h0000EADF; 
