@@ -15,7 +15,7 @@ output [31:0] C_sign_extended
 	assign Ra = IR_bits[26:23];
 	assign Rb = IR_bits[22:19];
 	assign Rc = IR_bits[18:15];
-	assign C_sign_extended = {{14{IR_bits[18]}}, IR_bits[17:0]};
+	assign C_sign_extended = {{14{IR_bits[17]}}, IR_bits[17:0]};
 	
 	// Determine which register field to pass to decoder
 	assign and_a = Ra & {4{Gra}}; 

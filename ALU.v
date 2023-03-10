@@ -1,7 +1,7 @@
 module ALU(
 	input AND, OR, ADD, SUB, MUL, DIV, SHR, 
-	input SHL, ROR, ROL, NEG, NOT, SHRA, 
-	input clk, div_done, div_rst,
+	input SHL, ROR, ROL, NEG, NOT, SHRA, BRANCH,
+	input clk, div_done, div_rst, con,
 	input [31:0] A, input [31:0] B, 
 	output reg [63:0] C
 );
@@ -61,9 +61,16 @@ module ALU(
 			C[31:0] = not_out;
 
 		end
-		
 		else if (SHRA == 1) begin 
 			C[31:0] = shra_out;
+		end
+		else if (BRANCH == 1) begin
+			if (con) begin
+				C[31:0] = add_out; 
+			end 
+			else begin
+				C[31:0] = A;
+			end
 		end
 	end
 	
@@ -73,7 +80,7 @@ module ALU(
 	Alu_Rotate_Left_32 rotate_left(A, B, rol_out);
 	Alu_Or_32 or_32(A, B, or_out);
 	Alu_And_32 and_32 (A, B, and_out);
-	Alu_Add_32 add(A, B, 1'b0, add_out);
+	Alu_Add_32 add(A, B, BRANCH === 1 ? 1'b1 : 1'b0, add_out);
 	Alu_Div_32 div(A, B, clk, div_rst, DIV, div_done, div_out_hi, div_out_lo);
 	Alu_Mul_32_Ext mul(A, B, mul_out);
 	Alu_Not_32 not_32(B, not_out);

@@ -1,7 +1,7 @@
 module Decoder_4_16(input [3:0] in, output reg [15:0] out);
 	
 	always @(*) begin
-	
+
 		case (in)
 			4'b0000: out = 16'b0000000000000001;
 			4'b0001: out = 16'b0000000000000010;

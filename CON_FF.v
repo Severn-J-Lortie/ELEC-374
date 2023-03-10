@@ -10,14 +10,14 @@ module CON_FF(input [31:0] IR_bits, BusMuxOut, input CON_in, output reg CON);
 	assign geq = ~BusMuxOut[31] & decoder_out[2];
 	assign lt = BusMuxOut[31] & decoder_out[3];
 	
-	assign or_out = eq | neq | geq | lt; 
-	
+	assign or_out = (eq | neq) | (geq | lt); 
 	initial begin
-		CON = 0; 
+		CON <= 0; 
 	end
 	
 	always @(posedge CON_in) begin
-		CON = or_out; 
+		$display(or_out);
+		CON <= or_out; 
 	end
 	
 endmodule

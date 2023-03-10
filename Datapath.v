@@ -13,7 +13,7 @@ input BAout, InPortout, OutPortin,
 input Gra, Grb, Grc, Rin, Rout, Cout, CONin,
 
 input AND, OR, ADD, SUB, MUL, DIV, SHR, 
-input SHL, ROR, ROL, NEG, NOT, SHRA, 
+input SHL, ROR, ROL, NEG, NOT, SHRA, BRANCH,
 
 
 // Export these signals for the waveform demos
@@ -46,6 +46,7 @@ output div_done
 
 	// Bus wire
 	wire [4:0] BusEncoderOut;
+	wire CONdataout;
 	
 	// Wire from register R0 to BusMuxInR0
 	wire [31:0] R0OutputToBusMuxIn;
@@ -77,8 +78,6 @@ output div_done
 	Register_32 #(I_R15) R15(clr, clk, register_ins[15], BusMuxOut, R15dataout);
 	
 	// Datapath registers
-	wire con_out;
-	wire pc_in; 
 	Register_32 Y(clr, clk, Yin, BusMuxOut, Ydataout);
 	Register_32 IR(clr, clk, IRin, BusMuxOut, IRdataout);
 	Register_32 MAR(clr, clk, MARin, BusMuxOut, MARdataout);
@@ -86,7 +85,7 @@ output div_done
 	Register_32 HI(clr, clk, HIin, BusMuxOut, HIdataout);
 	Register_32 LO(clr, clk, LOin, BusMuxOut, LOdataout);
 	Z z_reg(ALUdataout, Zlowout, Zhighout, clr, clk, Zin, Zlowdataout, Zhighdataout);
-	PC #(I_PC) pc(BusMuxOut, IncPC, clk, clr, pc_in, PCdataout);
+	PC #(I_PC) pc(BusMuxOut, IncPC, clk, clr, PCin, PCdataout);
 	Register_32 InputPort(clr, clk, 1'b1, InPortdatain, InPortdataout);
 	Register_32 OutputPort(clr, clk, OutPortin, BusMuxOut, OutPortdataout);
 	
@@ -95,12 +94,11 @@ output div_done
 	
 	// ALU
 	ALU alu(AND, OR, ADD, SUB, MUL, DIV, SHR, SHL, ROR, ROL, NEG, NOT, SHRA, 
-			clk, div_done, div_rst, Ydataout, BusMuxOut, ALUdataout);
+			BRANCH, clk, div_done, div_rst, CONdataout, Ydataout, BusMuxOut, ALUdataout);
 	
 	// CON FF
 	
-	assign pc_in = con_out | PCin;
-	CON_FF con_ff(IRdataout, BusMuxOut, CONin, con_out);
+	CON_FF con_ff(IRdataout, BusMuxOut, CONin, CONdataout);
 	
 	// Bus
 	Encoder_32_5 BusEncoder({10'b0, Cout, InPortout, MDRout, PCout, Zlowout, Zhighout, register_outs}, BusEncoderOut);
