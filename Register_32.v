@@ -10,17 +10,17 @@ module Register_32 #(parameter INITIAL_VAL = 32'b0) (
 	
 	initial
 		begin
-			Q = INITIAL_VAL;
+			Q <= INITIAL_VAL;
 		end
 	
 	always @(posedge clk or posedge clr) 
 		begin
 		
 			if (clr) begin
-				Q = 32'b0;
+				Q <= 32'b0;
 			end
 			else if (enable) begin
-				Q = D;
+				Q <= D;
 			end
 	
 		end
