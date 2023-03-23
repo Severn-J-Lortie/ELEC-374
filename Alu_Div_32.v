@@ -22,7 +22,6 @@ output [31:0] remainder, output [31:0] quotient);
 	
 	// Use a sequential method to achieve non-restoring division
 	always @(posedge clk) begin
-	
 		if (rdy) begin
 			// Reset code
 			if (rst == 1) begin 
@@ -33,7 +32,7 @@ output [31:0] remainder, output [31:0] quotient);
 				temp = 0; 
 				count = 6'd32;
 			end
-		
+
 			// Adopt wire values on clk edge
 			if (count == 32) begin 
 			
@@ -88,7 +87,6 @@ output [31:0] remainder, output [31:0] quotient);
 					end
 					
 				end
-				
 				done = 1;
 				
 			end

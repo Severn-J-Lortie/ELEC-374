@@ -1,9 +1,10 @@
 module ALU(
 	input AND, OR, ADD, SUB, MUL, DIV, SHR, 
 	input SHL, ROR, ROL, NEG, NOT, SHRA, BRANCH,
-	input clk, div_done, div_rst, con,
+	input clk, div_rst, con,
 	input [31:0] A, input [31:0] B, 
-	output reg [63:0] C
+	output reg [63:0] C,
+	output div_done
 );
 
 	wire [31:0] sub_out, ror_out, rol_out, or_out, and_out, add_out; 

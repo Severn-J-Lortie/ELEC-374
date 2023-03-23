@@ -32,7 +32,7 @@ output [7:0] present_state
 
 	// Control signals
 	wire PCout, MDRout, Zhighout, Zlowout, HIin, LOin;
-	wire MDRin, MARin, div_rst, div_rdy;
+	wire MDRin, MARin, div_rst, div_done;
 	wire Zin, Yin, IRin, PCin, Read, Write, IncPC;
 	wire BAout, InPortout, OutPortin;
 	wire Gra, Grb, Grc, Rin, Rout, Cout, CONin;
@@ -42,7 +42,7 @@ output [7:0] present_state
 	wire R15in;
 	
 	// Control signals to control unit
-	wire div_done, Stop; 
+	wire Stop; 
 
 	// Bus wire
 	wire [4:0] BusEncoderOut;
@@ -76,8 +76,7 @@ output [7:0] present_state
 	Register_32 R13(clr, clk, register_ins[13], BusMuxOut, R13dataout);
 	Register_32 R14(clr, clk, register_ins[14], BusMuxOut, R14dataout);
 	Register_32 R15(clr, clk, register_ins[15] | (R15in === 1), BusMuxOut, R15dataout);
-	defparam R2.INITIAL_VAL = 32'd10;
-	defparam R4.INITIAL_VAL = 32'd1;
+	defparam R4.INITIAL_VAL = 32'd10;
 	// Datapath registers
 	Register_32 Y(clr, clk, Yin, BusMuxOut, Ydataout);
 	Register_32 IR(clr, clk, IRin, BusMuxOut, IRdataout);
@@ -94,7 +93,7 @@ output [7:0] present_state
 	
 	// ALU
 	ALU alu(AND, OR, ADD, SUB, MUL, DIV, SHR, SHL, ROR, ROL, NEG, NOT, SHRA, 
-			BRANCH, clk, div_done, div_rst, CONdataout, Ydataout, BusMuxOut, ALUdataout);
+			BRANCH, clk, div_rst, CONdataout, Ydataout, BusMuxOut, ALUdataout, div_done);
 	
 	// CON FF
 	CON_FF con_ff(IRdataout, BusMuxOut, CONin, CONdataout);
@@ -109,9 +108,9 @@ output [7:0] present_state
 	// Place control directly in with the datapath code.
 	// Makes connecting control and various signals easier
 	Control control(
-		clk, clr, Stop, IRdataout,
+		clk, clr, Stop, div_done, IRdataout,
 		PCout, MDRout, Zhighout, Zlowout, HIin, LOin,
-		MDRin, MARin, div_rst, div_rdy,
+		MDRin, MARin, div_rst,
 		Zin, Yin, IRin, PCin, Read, Write, IncPC,
 		BAout, InPortout, OutPortin,
 		Gra, Grb, Grc, Rin, Rout, Cout, CONin,

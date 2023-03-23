@@ -11,7 +11,7 @@ module RAM_32_512(input Read, Write, input [31:0] data_in, input[8:0] address, i
 		end
 		
 		/* Instructions */
-		mem[0] = 32'h39920000; 
+		mem[0] = 32'h89A00000; 
 		
 		/* Data */
 
