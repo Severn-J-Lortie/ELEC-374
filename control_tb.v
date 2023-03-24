@@ -14,7 +14,8 @@ module control_tb;
 	wire [31:0] R9dataout, R10dataout;
 	wire [31:0] R11dataout, R12dataout;
 	wire [31:0] R13dataout, R14dataout;
-	wire [31:0] R15dataout;
+	wire [31:0] R15dataout, HIdataout;
+	wire [31:0] LOdataout;
 	wire [7:0] present_state;
 	
 	MiniSRC cpu(
@@ -30,14 +31,15 @@ module control_tb;
 	.R9dataout(R9dataout), .R10dataout(R10dataout),
 	.R11dataout(R11dataout), .R12dataout(R12dataout),
 	.R13dataout(R13dataout), .R14dataout(R14dataout),
-	.R15dataout(R15dataout), .R0dataout(R0dataout)
+	.R15dataout(R15dataout), .R0dataout(R0dataout),
+	.HIdataout(HIdataout), .LOdataout(LOdataout)
 	);
 	
 	initial begin
-		clr <= 0; clk = 1;
+		clk = 1;
 		
 		// Assert clear to start the CPU
-		clr <= 0;
+		clr <= 1;
 		#10;
 		clr <= 0; 
 		

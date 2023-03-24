@@ -2,6 +2,7 @@
 module Control(
 input clk, Reset, Stop, div_done,
 input [31:0] IR,
+output reg Run,
 
 // Datapath control signals to be generated
 output reg PCout, MDRout, Zhighout, Zlowout, HIin, LOin,
@@ -35,7 +36,18 @@ output reg [7:0] present_state
 	parameter div3 = 8'd44, div4 = 8'd45, div5 = 8'd46,  div6 = 8'd47, div7 = 8'd48;
 	parameter neg3 = 8'd49, neg4 = 8'd50;
 	parameter not3 = 8'd51, not4 = 8'd52;
-
+	parameter br3 = 8'd53, br4 = 8'd54, br5 = 8'd55, br6 = 8'd56;
+	parameter ld3 = 8'd57, ld4 = 8'd58, ld5 = 8'd59, ld6 = 8'd60, ld7 = 8'd61;
+	parameter ldi3 = 8'd62, ldi4 = 8'd63, ldi5 = 8'd64;
+	parameter st3 = 8'd65, st4 = 8'd66, st5 = 8'd67, st6 = 8'd68, st7 = 8'd69;
+	parameter jr3 = 8'd70;
+	parameter jal3 = 8'd71, jal4 = 8'd72, jal5 = 8'd73;
+	parameter in3 = 8'd74;
+	parameter out3 = 8'd75;
+	parameter mfhi3 = 8'd76;
+	parameter mflo3 = 8'd77;
+	parameter halt3 = 8'd78;
+	
 	initial begin
 		present_state = reset_state;
 	end
@@ -44,10 +56,13 @@ output reg [7:0] present_state
 	// negative edge of the clock. This allows for
 	// some setup time so that the registers will latch
 	// values on the positive edge
-	always @(negedge clk, posedge Reset) begin
+	always @(negedge clk, posedge Reset, posedge Stop) begin
 	
 		if (Reset == 1) begin
 			present_state = reset_state;
+		end
+		else if (Stop == 1) begin
+			present_state = halt3;
 		end
 		else begin
 			case(present_state)
@@ -72,6 +87,18 @@ output reg [7:0] present_state
 						5'b10000: present_state = div3;
 						5'b10001: present_state = neg3;
 						5'b10010: present_state = not3;
+						5'b10011: present_state = br3;
+						5'b00000: present_state = ld3;
+						5'b00001: present_state = ldi3;
+						5'b00010: present_state = st3;
+						5'b10100: present_state = jr3;
+						5'b10101: present_state = jal3;
+						5'b10110: present_state = in3;
+						5'b10111: present_state = out3;
+						5'b11000: present_state = mfhi3;
+						5'b11001: present_state = mflo3;
+						5'b11010: present_state = reset_state;
+						5'b11011: present_state = halt3;
 					endcase
 				end
 				add3: present_state = add4;
@@ -84,7 +111,7 @@ output reg [7:0] present_state
 				
 				and3: present_state = and4;
 				and4: present_state = and5;
-				sub5: present_state = reset_state;
+				and5: present_state = reset_state;
 				
 				or3: present_state = or4;
 				or4: present_state = or5;
@@ -93,6 +120,10 @@ output reg [7:0] present_state
 				shr3: present_state = shr4;
 				shr4: present_state = shr5;
 				shr5: present_state = reset_state;
+				
+				shra3: present_state = shra4;
+				shra4: present_state = shra5;
+				shra5: present_state = reset_state;
 
 				shl3: present_state = shl4;
 				shl4: present_state = shl5;
@@ -137,6 +168,44 @@ output reg [7:0] present_state
 				neg3: present_state = neg4;
 				neg4: present_state = reset_state;
 				
+				not3: present_state = not4;
+				not4: present_state = reset_state;
+				
+				br3: present_state = br4;
+				br4: present_state = br5;
+				br5: present_state = br6;
+				br6: present_state = reset_state;
+				
+				ld3: present_state = ld4;
+				ld4: present_state = ld5;
+				ld5: present_state = ld6;
+				ld6: present_state = ld7;
+				ld7: present_state = reset_state;
+				
+				ldi3: present_state = ldi4;
+				ldi4: present_state = ldi5;
+				ldi5: present_state = reset_state;
+				
+				st3: present_state = st4;
+				st4: present_state = st5;
+				st5: present_state = st6;
+				st6: present_state = st7;
+				st7: present_state = reset_state;
+				
+				jr3: present_state = reset_state;
+				
+				jal3: present_state = jal4;
+				jal4: present_state = jal5;
+				jal5: present_state = reset_state;
+				
+				in3: present_state = reset_state;
+				
+				out3: present_state = reset_state;
+				
+				mfhi3: present_state = reset_state;
+				
+				mflo3: present_state = reset_state;
+				
 			endcase
 		end
 	end
@@ -147,14 +216,14 @@ output reg [7:0] present_state
 			reset_state: begin
 				PCout <= 0; MDRout <= 0; Zhighout <= 0; Zlowout <= 0;
 				HIout <= 0; LOout <= 0; MDRin <= 0; MARin <= 0;
-				div_rst <= 0; Zin <= 0; Yin <= 0;
+				div_rst <= 0; Zin <= 0; Yin <= 0; HIin <=0; LOin <= 0;
 				IRin <= 0; PCin <= 0; Read <= 0; Write <= 0; IncPC <= 0;
 				BAout <= 0; InPortout <= 0; OutPortin <= 0; Gra <= 0;
 				Grb <= 0; Grc <= 0; Rin <= 0; Rout <= 0; Cout <= 0;
 				CONin <= 0; AND <= 0; OR <= 0; ADD <= 0; SUB <= 0;
 				MUL <= 0; DIV <= 0; SHR <= 0; SHL <= 0; ROR <= 0;
 				ROL <= 0; NEG <= 0; NOT <= 0; SHRA <= 0; BRANCH <= 0;
-				R15in <= 0;
+				R15in <= 0; Run <= 1;
 			end
 			fetch0: begin
 				PCout<= 1; MARin <= 1; 
@@ -376,7 +445,6 @@ output reg [7:0] present_state
 				Grb <= 0; Rout <= 0; NEG <= 0; Zin <= 0;
 				Gra <= 1; Rin <= 1; Zlowout <=1;
 			end
-		endcase
 /*****************************************************/
 			not3: begin
 				MDRout <= 0; IRin <= 0; 
@@ -387,6 +455,121 @@ output reg [7:0] present_state
 				Grb <= 0; Rout <= 0; NOT <= 0; Zin <= 0;
 				Gra <= 1; Rin <= 1; Zlowout <=1;
 			end
+/*****************************************************/
+			br3: begin
+				MDRout <= 0; IRin <= 0; 
+				Gra <= 1; Rout <= 1; CONin <= 1;
+			end
+			br4: begin 
+				Gra <= 0; Rout <= 0; CONin <= 0;
+				PCout <= 1; Yin <= 1;
+			end
+			br5: begin 
+				PCout <= 0; Yin <= 0;
+				Cout <= 1; BRANCH <= 1; Zin <= 1;
+			end
+			br6: begin 
+				Cout <= 0; BRANCH <= 0; Zin <= 0;
+				Zlowout <= 1; PCin <= 1;
+			end
+/*****************************************************/
+			ld3: begin
+				MDRout <= 0; IRin <= 0; 
+				Grb <= 1; BAout <= 1; Yin <= 1;
+			end
+			ld4: begin 
+				Grb <= 0; BAout <= 0; Yin <= 0;
+				Cout <= 1; ADD <= 1; Zin <= 1;
+			end
+			ld5: begin 
+				Cout <= 0; ADD <= 0; Zin <= 0;
+				Zlowout <= 1; MARin <= 1;
+			end
+			ld6: begin 
+				Zlowout <= 0; MARin <= 0;
+				Read <= 1; MDRin <= 1;
+			end
+			ld7: begin 
+				Read <= 0; MDRin <= 0;
+				MDRout <= 1; Gra <= 1; Rin <= 1; 
+			end
+/*****************************************************/
+			ldi3: begin
+				MDRout <= 0; IRin <= 0; 
+				Grb <= 1; BAout <= 1; Yin <= 1;
+			end
+			ldi4: begin 
+				Grb <= 0; BAout <= 0; Yin <= 0;
+				Cout <= 1; ADD <= 1; Zin <= 1;
+			end
+			ldi5: begin 
+				Cout <= 0; ADD <= 0; Zin <= 0;
+				Zlowout <= 1; Gra <= 1; Rin <= 1;
+			end
+/*****************************************************/
+			st3: begin
+				IRin <= 0; MDRout <= 0;
+				Grb <= 1; BAout <= 1; Yin <= 1;
+			end
+			st4: begin 
+				Grb <= 0; BAout <= 0; Yin <= 0; 
+				Cout <= 1; ADD <= 1; Zin <= 1;
+			end
+			st5: begin 
+				Cout <= 0; ADD <= 0; Zin <= 0;
+				Zlowout <= 1; MARin <= 1;
+			end
+			st6: begin 
+				Zlowout <= 0; MARin <= 0;
+				MDRin <= 1; Gra <= 1; BAout <= 1; 
+			end
+			st7: begin 
+				MDRin <= 0; Gra <= 0; BAout <= 0;
+				MDRout <= 1; Write <= 1;
+			end
+/*****************************************************/
+			jr3: begin
+				IRin <= 0; MDRout <= 0;
+				Gra <= 1; Rout <= 1; PCin <= 1;
+			end
+/*****************************************************/
+			jal3: begin
+				IRin <= 0; MDRout <= 0;
+				IncPC <= 1;
+			end
+			jal4: begin
+				IncPC <= 0; 
+				R15in <= 1; PCout <= 1;
+			end
+			jal5: begin
+				PCout <= 0; R15in <= 0;
+				Gra <=1; Rout <= 1; PCin <= 1;
+			end
+/*****************************************************/
+			in3: begin
+				MDRout<= 0; IRin <= 0;
+				Gra <= 1; Rin <= 1; InPortout <= 1;
+			end
+/*****************************************************/
+			out3: begin
+				MDRout<= 0; IRin <= 0;
+				Gra <= 1; Rout <= 1; OutPortin <= 1;
+			end
+/*****************************************************/
+			mfhi3: begin
+				MDRout<= 0; IRin <= 0;
+				HIout <= 1; Gra <= 1; Rin <= 1;
+			end
+/*****************************************************/
+			mflo3: begin
+				MDRout<= 0; IRin <= 0;
+				LOout <= 1; Gra <= 1; Rin <= 1;
+			end
+/*****************************************************/
+			halt3: begin
+				Run <= 0;
+			end
+
 		endcase
 	end
 

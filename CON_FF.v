@@ -1,4 +1,4 @@
-module CON_FF(input [31:0] IR_bits, BusMuxOut, input CON_in, output reg CON);
+module CON_FF(input [31:0] IR_bits, BusMuxOut, output CON);
 
 	wire [3:0] decoder_out;
 	wire eq, neq, geq, lt, nor_out, or_out; 
@@ -10,14 +10,6 @@ module CON_FF(input [31:0] IR_bits, BusMuxOut, input CON_in, output reg CON);
 	assign geq = ~BusMuxOut[31] & decoder_out[2];
 	assign lt = BusMuxOut[31] & decoder_out[3];
 	
-	assign or_out = (eq | neq) | (geq | lt); 
-	initial begin
-		CON <= 0; 
-	end
-	
-	always @(posedge CON_in) begin
-		$display(or_out);
-		CON <= or_out; 
-	end
+	assign CON = (eq | neq) | (geq | lt); 	
 	
 endmodule

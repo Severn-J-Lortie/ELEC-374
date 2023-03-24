@@ -27,7 +27,10 @@ output [15:0] register_ins,
 output [31:0] RAMdataout, C_sign_extended,
 
 // Control
-output [7:0] present_state
+output [7:0] present_state,
+
+// CPU state
+output Run
 );
 
 	// Control signals
@@ -54,6 +57,7 @@ output [7:0] present_state
 	// Clear R0DataOut when BAout is asserted
 	assign R0dataout = R0OutputToBusMuxIn & {32{!BAout}};
 	
+	wire CONout; 
 	
 	// Select and encode logic
 	Select_Encode select_encode(IRdataout, Gra, Grb, Grc, Rin, 
@@ -76,7 +80,7 @@ output [7:0] present_state
 	Register_32 R13(clr, clk, register_ins[13], BusMuxOut, R13dataout);
 	Register_32 R14(clr, clk, register_ins[14], BusMuxOut, R14dataout);
 	Register_32 R15(clr, clk, register_ins[15] | (R15in === 1), BusMuxOut, R15dataout);
-	defparam R4.INITIAL_VAL = 32'd10;
+	
 	// Datapath registers
 	Register_32 Y(clr, clk, Yin, BusMuxOut, Ydataout);
 	Register_32 IR(clr, clk, IRin, BusMuxOut, IRdataout);
@@ -88,6 +92,7 @@ output [7:0] present_state
 	PC pc(BusMuxOut, IncPC, clk, clr, PCin, PCdataout);
 	Register_32 InputPort(clr, clk, 1'b0, InPortdatain, InPortdataout);
 	Register_32 OutputPort(clr, clk, OutPortin, BusMuxOut, OutPortdataout);
+	Register_32 CON(clr, clk, CONin, CONout, CONdataout);   
 	// RAM
 	RAM_32_512 RAM(Read, Write, MDRdataout, MARdataout[8:0], clk, RAMdataout);
 	
@@ -96,7 +101,7 @@ output [7:0] present_state
 			BRANCH, clk, div_rst, CONdataout, Ydataout, BusMuxOut, ALUdataout, div_done);
 	
 	// CON FF
-	CON_FF con_ff(IRdataout, BusMuxOut, CONin, CONdataout);
+	CON_FF con_ff(IRdataout, BusMuxOut, CONout);
 	
 	// Bus
 	Encoder_32_5 BusEncoder({8'b0, LOout, HIout, Cout, InPortout, MDRout, PCout, Zlowout, Zhighout, register_outs}, BusEncoderOut);
@@ -108,7 +113,7 @@ output [7:0] present_state
 	// Place control directly in with the datapath code.
 	// Makes connecting control and various signals easier
 	Control control(
-		clk, clr, Stop, div_done, IRdataout,
+		clk, clr, Stop, div_done, IRdataout, Run,
 		PCout, MDRout, Zhighout, Zlowout, HIin, LOin,
 		MDRin, MARin, div_rst,
 		Zin, Yin, IRin, PCin, Read, Write, IncPC,

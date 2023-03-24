@@ -81,7 +81,7 @@ module ALU(
 	Alu_Rotate_Left_32 rotate_left(A, B, rol_out);
 	Alu_Or_32 or_32(A, B, or_out);
 	Alu_And_32 and_32 (A, B, and_out);
-	Alu_Add_32 add(A, B, BRANCH === 1 ? 1'b1 : 1'b0, add_out);
+	Alu_Add_32 add(A, B, /*BRANCH === 1 ? 1'b1 : 1'b0*/ 1'b0, add_out);
 	Alu_Div_32 div(A, B, clk, div_rst, DIV, div_done, div_out_hi, div_out_lo);
 	Alu_Mul_32_Ext mul(A, B, mul_out);
 	Alu_Not_32 not_32(B, not_out);
