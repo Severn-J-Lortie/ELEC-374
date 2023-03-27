@@ -90,8 +90,9 @@ output Run
 	Register_32 LO(clr, clk, LOin, BusMuxOut, LOdataout);
 	Z z_reg(ALUdataout, Zlowout, Zhighout, clr, clk, Zin, Zlowdataout, Zhighdataout);
 	PC pc(BusMuxOut, IncPC, clk, clr, PCin, PCdataout);
-	Register_32 InputPort(clr, clk, 1'b0, InPortdatain, InPortdataout);
+	Register_32 InputPort(/*clr*/ 0'b0, clk, 1'b0, InPortdatain, InPortdataout);
 	Register_32 OutputPort(clr, clk, OutPortin, BusMuxOut, OutPortdataout);
+	defparam InputPort.INITIAL_VAL = 32'h88;
 	Register_32 CON(clr, clk, CONin, CONout, CONdataout);   
 	// RAM
 	RAM_32_512 RAM(Read, Write, MDRdataout, MARdataout[8:0], clk, RAMdataout);

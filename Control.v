@@ -535,10 +535,10 @@ output reg [7:0] present_state
 /*****************************************************/
 			jal3: begin
 				IRin <= 0; MDRout <= 0;
-				IncPC <= 1;
+				//IncPC <= 1;
 			end
 			jal4: begin
-				IncPC <= 0; 
+				//IncPC <= 0; 
 				R15in <= 1; PCout <= 1;
 			end
 			jal5: begin
